@@ -1,9 +1,17 @@
-import { Server as SocketIOServer } from "socket.io";
+import { Server } from "socket.io"
+
+import hostGame from "./hostGame"
 
 class SocketService {
-  constructor (io: SocketIOServer) {
-    io.on('connection', () => {
-      console.log("a user connected..")
+  constructor (io: Server) {
+    io.on('connection', (socket) => {
+      console.log("a user connected..", socket.id)
+
+      socket.on('disconnect', () => {
+        console.log("a user said bye bye", socket.id)
+      })
+
+      socket.on('HOST_GAME', hostGame)
     })
   }
 }
