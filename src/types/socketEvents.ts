@@ -1,4 +1,12 @@
+import { Turn } from "./entities"
+
 export type HostGameData = {
-  name: string
-  gridSize: number
+  playerId: string
 }
+
+export type JoinGameData = {
+  playerId: string
+  gameCode: string
+}
+
+export type TakeTurnData = Turn
