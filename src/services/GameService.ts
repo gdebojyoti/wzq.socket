@@ -30,6 +30,16 @@ class GameService {
       return null
     }
   }
+
+  static joinGame (gameCode: string) {
+    try {
+      const game = GameService.gameStore.joinGame(gameCode)
+      return game
+    } catch (err) {
+      console.error("Failed to add the game", err)
+      return null
+    }
+  }
 }
 
 export default GameService

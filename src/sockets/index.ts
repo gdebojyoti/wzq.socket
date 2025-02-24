@@ -1,6 +1,7 @@
 import { Server } from "socket.io"
 
 import hostGame from "./hostGame"
+import joinGame from "./joinGame"
 
 class SocketService {
   constructor (io: Server) {
@@ -11,8 +12,8 @@ class SocketService {
         console.log("a user said bye bye", socket.id)
       })
 
-      socket.on('HOST_GAME', hostGame.bind(null, socket))
-      // socket.on('HOST_GAME', data => hostGame(socket, data))
+      socket.on('HOST_GAME', data => hostGame({ socket }, data))
+      socket.on('JOIN_GAME', data => joinGame({ io, socket }, data))
     })
   }
 }
