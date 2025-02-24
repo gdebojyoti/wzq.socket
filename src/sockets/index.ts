@@ -11,7 +11,8 @@ class SocketService {
         console.log("a user said bye bye", socket.id)
       })
 
-      socket.on('HOST_GAME', hostGame)
+      socket.on('HOST_GAME', hostGame.bind(null, socket))
+      // socket.on('HOST_GAME', data => hostGame(socket, data))
     })
   }
 }
