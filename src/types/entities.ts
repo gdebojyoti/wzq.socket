@@ -22,10 +22,10 @@ export type Game = {
 }
 
 export enum GameStatus {
-  Lobby,
-  Ongoing,
-  Completed,
-  Stalemate // all cells filled without any winner
+  Lobby = 'LOBBY',
+  Ongoing = 'ONGOING',
+  Completed = 'COMPLETED',
+  Stalemate = 'STALEMATE' // all cells filled without any winner
 }
 
 export type Turn = {

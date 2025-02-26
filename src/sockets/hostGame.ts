@@ -2,7 +2,7 @@ import { HostGameData } from "../types/socketEvents"
 import GameService from "../services/GameService"
 
 export default function hostGame ({ socket }: any, data: HostGameData) {
-  const game = GameService.createGame()
+  const game = GameService.createGame(data.playerId)
 
   if (!game) {
     // // inform client of error
