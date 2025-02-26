@@ -1,5 +1,5 @@
 import { Game, GameStatus } from "../types/entities"
-import { SyncGameInput } from "../types/socketEvents"
+import { JoinGameData, SyncGameInput } from "../types/socketEvents"
 
 class GameStore {
   static instance: GameStore
@@ -17,14 +17,17 @@ class GameStore {
     this.games.push(game)
   }
 
-  joinGame (gameCode: string) {
+  joinGame ({ gameCode, playerId }: JoinGameData) {
     // search for game
-    const game = this.games.find(({ code }) => code === gameCode)
+    const game = this.games.find(({ code, status }) => (code === gameCode && status === GameStatus.Lobby))
 
     // check if game is found
     if (game) {
       // remove game code
       delete game.code
+
+      // add player to list
+      game.playerIds = [...game.playerIds, playerId]
 
       // set status to Ongoing
       game.status = GameStatus.Ongoing

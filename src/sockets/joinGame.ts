@@ -2,7 +2,7 @@ import { JoinGameData } from "../types/socketEvents"
 import GameService from "../services/GameService"
 
 export default function joinGame ({ io, socket }: any, data: JoinGameData) {
-  const game = GameService.joinGame(data.gameCode)
+  const game = GameService.joinGame(data)
 
   if (!game) {
     // inform client of error

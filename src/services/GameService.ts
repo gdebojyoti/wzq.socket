@@ -1,6 +1,6 @@
 import GameStore from '../models/GameStore'
 import { Game, GameStatus } from '../types/entities'
-import { SyncGameInput } from '../types/socketEvents'
+import { JoinGameData, SyncGameInput } from '../types/socketEvents'
 
 class GameService {
   static gameStore = new GameStore()
@@ -32,9 +32,9 @@ class GameService {
     }
   }
 
-  static joinGame (gameCode: string) {
+  static joinGame (data: JoinGameData) {
     try {
-      const game = GameService.gameStore.joinGame(gameCode)
+      const game = GameService.gameStore.joinGame(data)
       return game
     } catch (err) {
       console.error("Failed to add the game", err)
