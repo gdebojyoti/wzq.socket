@@ -3,7 +3,24 @@ import { JoinGameData, SyncGameInput } from "../types/socketEvents"
 
 class GameStore {
   static instance: GameStore
-  games: Game[] = []
+
+  // games: Game[] = []
+  games: Game[] = [
+    {
+      "id": "1740570526738",
+      "rowSize": 16,
+      "colSize": 16,
+      "status": GameStatus.Ongoing,
+      "playerIds": [
+        "001",
+        "002"
+      ],
+      "hostPlayerId": "001",
+      "winnerPlayerId": "",
+      "createdAt": 1740570526738,
+      "turns": []
+    }
+  ]
 
   constructor () {
     if (!GameStore.instance) {
