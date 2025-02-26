@@ -1,10 +1,11 @@
 import GameStore from '../models/GameStore'
 import { Game, GameStatus } from '../types/entities'
+import { SyncGameInput } from '../types/socketEvents'
 
 class GameService {
   static gameStore = new GameStore()
   
-  static createGame () {
+  static createGame (playerId: string) {
     const id = new Date().getTime().toString() // generate dynamic ID - using current timestamp
     const code = Math.floor(Math.random() * 1000000).toString() // generate random 6 digit code
     const createdAt = new Date().getTime() // get current timestamp
@@ -15,8 +16,8 @@ class GameService {
       rowSize: 16, // default row size (16)
       colSize: 16, // default column size (16)
       status: GameStatus.Lobby, // default status of game is "Lobby"
-      playerIds: [],
-      hostPlayerId: '',
+      playerIds: [playerId],
+      hostPlayerId: playerId,
       winnerPlayerId: '',
       createdAt,
       turns: []
@@ -37,6 +38,16 @@ class GameService {
       return game
     } catch (err) {
       console.error("Failed to add the game", err)
+      return null
+    }
+  }
+
+  static getGameDetails (data: SyncGameInput) {
+    try {
+      const game = GameService.gameStore.getGameDetails(data)
+      return game
+    } catch (err) {
+      console.error("Failed to find the game", err)
       return null
     }
   }

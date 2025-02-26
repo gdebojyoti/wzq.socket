@@ -9,4 +9,9 @@ export type JoinGameData = {
   gameCode: string
 }
 
+export type SyncGameInput = {
+  playerId: string
+  gameId: string
+}
+
 export type TakeTurnData = Turn

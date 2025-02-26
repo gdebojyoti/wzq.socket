@@ -1,4 +1,5 @@
 import { Game, GameStatus } from "../types/entities"
+import { SyncGameInput } from "../types/socketEvents"
 
 class GameStore {
   static instance: GameStore
@@ -28,6 +29,18 @@ class GameStore {
       // set status to Ongoing
       game.status = GameStatus.Ongoing
 
+      return game
+    }
+
+    throw new Error ("Game not found")
+  }
+
+  getGameDetails ({ playerId, gameId }: SyncGameInput) {
+    // search for game
+    const game = this.games.find(({ id, playerIds }) => (id === gameId && playerIds.includes(playerId)))
+
+    // check if game is found
+    if (game) {
       return game
     }
 
