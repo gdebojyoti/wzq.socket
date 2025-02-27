@@ -1,6 +1,7 @@
 import { Game, GameStatus } from "../types/entities"
 import { JoinGameData, SyncGameInput, TakeTurnData } from "../types/socketEvents"
 import checkIfPlayersTurn from "../utils/checkIfPlayersTurn"
+import checkForVictory from "../utils/checkForVictory"
 
 class GameStore {
   static instance: GameStore
@@ -103,6 +104,38 @@ class GameStore {
     } catch (e) {
       throw e
     }
+  }
+
+  updateAndGetGameStatus (gameId: string) {
+    // search for game
+    const game = this.games.find(({ id, status }) => (status === GameStatus.Lobby && id === gameId)) as Game | undefined
+
+    // check if game is found
+    if (!game) {
+      throw new Error ("Game not found")
+    }
+
+    const { turns, status } = game
+    // game needs a total of at least 9 turns before anyone can win
+    if (turns.length < 9) {
+      return status
+    }
+
+    const didWin = checkForVictory(turns)
+
+    // in case of victory
+    if (didWin) {
+      game.status = GameStatus.Completed
+      return game.status
+    }
+
+    // if all turns are taken, set status as stalemate
+    if (turns.length === 16 * 16) {
+      game.status = GameStatus.Stalemate
+      return game.status
+    }
+
+    return status
   }
 }
 

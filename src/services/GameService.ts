@@ -61,6 +61,14 @@ class GameService {
       return null
     }
   }
+
+  static updateAndGetGameStatus (gameId: string) {
+    try {
+      return GameService.gameStore.updateAndGetGameStatus(gameId)
+    } catch (err) {
+      return null
+    }
+  }
 }
 
 export default GameService
