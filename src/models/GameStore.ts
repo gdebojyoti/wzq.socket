@@ -1,5 +1,6 @@
 import { Game, GameStatus } from "../types/entities"
-import { JoinGameData, SyncGameInput } from "../types/socketEvents"
+import { JoinGameData, SyncGameInput, TakeTurnData } from "../types/socketEvents"
+import checkIfPlayersTurn from "../utils/checkIfPlayersTurn"
 
 class GameStore {
   static instance: GameStore
@@ -65,6 +66,37 @@ class GameStore {
     }
 
     throw new Error ("Game not found")
+  }
+
+  takeTurn ({ playerId, cell, gameId }: TakeTurnData) {
+    // search for game
+    const game = this.games.find(({ id, playerIds }) => (id === gameId && playerIds.includes(playerId)))
+
+    // check if game is found
+    if (!game) {
+      throw new Error ("Game not found")
+    }
+
+    try {
+      const { turns, hostPlayerId } = game
+      const isPlayersTurn = checkIfPlayersTurn(turns, playerId, hostPlayerId)
+
+      // check if game is found
+      if (!isPlayersTurn) {
+        throw new Error ("Invalid turn")
+      }
+
+      const turn = {
+        cell,
+        playerId
+      }
+
+      turns.push(turn)
+
+      return turn
+    } catch (e) {
+      throw e
+    }
   }
 }
 

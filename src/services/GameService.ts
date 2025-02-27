@@ -1,6 +1,6 @@
 import GameStore from '../models/GameStore'
-import { Game, GameStatus } from '../types/entities'
-import { JoinGameData, SyncGameInput } from '../types/socketEvents'
+import { Game, GameStatus, Turn } from '../types/entities'
+import { JoinGameData, SyncGameInput, TakeTurnData } from '../types/socketEvents'
 
 class GameService {
   static gameStore = new GameStore()
@@ -48,6 +48,16 @@ class GameService {
       return game
     } catch (err) {
       console.error("Failed to find the game", err)
+      return null
+    }
+  }
+
+  static takeTurn (data: TakeTurnData) {
+    try {
+      const turnData: Turn = GameService.gameStore.takeTurn(data)
+      return turnData
+    } catch (err) {
+      console.error("Failed to take turn", err)
       return null
     }
   }
