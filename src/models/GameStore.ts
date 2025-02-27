@@ -81,9 +81,15 @@ class GameStore {
       const { turns, hostPlayerId } = game
       const isPlayersTurn = checkIfPlayersTurn(turns, playerId, hostPlayerId)
 
-      // check if game is found
+      // check if it actually is player's turn
       if (!isPlayersTurn) {
-        throw new Error ("Invalid turn")
+        throw new Error ("Not player's turn")
+      }
+
+      // check if the cell is occupied
+      const isCellOccupied = turns.find(({ cell: { rowId, colId } }) => (cell.rowId === rowId && cell.colId === colId))
+      if (isCellOccupied) {
+        throw new Error ("Non-empty turn")
       }
 
       const turn = {
