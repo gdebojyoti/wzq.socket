@@ -71,7 +71,7 @@ class GameStore {
 
   takeTurn ({ playerId, cell, gameId }: TakeTurnData) {
     // search for game
-    const game = this.games.find(({ id, playerIds }) => (id === gameId && playerIds.includes(playerId)))
+    const game = this.games.find(({ id, playerIds, status }) => (status === GameStatus.Ongoing && id === gameId && playerIds.includes(playerId)))
 
     // check if game is found
     if (!game) {
@@ -108,7 +108,7 @@ class GameStore {
 
   updateAndGetGameStatus (gameId: string) {
     // search for game
-    const game = this.games.find(({ id, status }) => (status === GameStatus.Lobby && id === gameId)) as Game | undefined
+    const game = this.games.find(({ id, status }) => (status === GameStatus.Ongoing && id === gameId)) as Game | undefined
 
     // check if game is found
     if (!game) {
