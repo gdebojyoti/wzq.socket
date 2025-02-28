@@ -62,9 +62,9 @@ class GameService {
     }
   }
 
-  static updateAndGetGameStatus (gameId: string) {
+  static updateAndGetGameStatus (gameId: string, playerId: string) {
     try {
-      return GameService.gameStore.updateAndGetGameStatus(gameId)
+      return GameService.gameStore.updateAndGetGameStatus(gameId, playerId)
     } catch (err) {
       return null
     }

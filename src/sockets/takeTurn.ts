@@ -17,12 +17,13 @@ export default function takeTurn ({ io, socket }: any, data: TakeTurnData) {
   // inform everyone of created game details
   io.sockets.emit("TURN_TAKEN", turnData)
 
-  const gameStatus = GameService.updateAndGetGameStatus(data.gameId)
+  const { status, winnerPlayerId } = GameService.updateAndGetGameStatus(data.gameId, data.playerId) || {}
 
-  if (gameStatus && [GameStatus.Completed, GameStatus.Stalemate].includes(gameStatus)) {
+  if (status === GameStatus.Completed) {
     // inform everyone of victory
     io.sockets.emit("GAME_OVER", {
-      didWin: true
+      status,
+      winnerPlayerId
     })
   }
 }
