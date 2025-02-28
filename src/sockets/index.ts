@@ -3,6 +3,7 @@ import { Server } from "socket.io"
 import hostGame from "./hostGame"
 import joinGame from "./joinGame"
 import syncClient from "./syncClient"
+import takeTurn from "./takeTurn"
 
 class SocketService {
   constructor (io: Server) {
@@ -16,6 +17,7 @@ class SocketService {
       socket.on('HOST_GAME', data => hostGame({ socket }, data))
       socket.on('JOIN_GAME', data => joinGame({ io, socket }, data))
       socket.on('SYNC_CLIENT', data => syncClient({ socket }, data))
+      socket.on('TAKE_TURN', data => takeTurn({ io, socket }, data))
     })
   }
 }

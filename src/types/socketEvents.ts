@@ -1,4 +1,4 @@
-import { Turn } from "./entities"
+import { Cell } from "./entities"
 
 export type HostGameData = {
   playerId: string
@@ -14,4 +14,8 @@ export type SyncGameInput = {
   gameId: string
 }
 
-export type TakeTurnData = Turn
+export type TakeTurnData = {
+  playerId: string
+  cell: Cell
+  gameId: string
+}
