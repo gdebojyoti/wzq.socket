@@ -106,7 +106,7 @@ class GameStore {
     }
   }
 
-  updateAndGetGameStatus (gameId: string) {
+  updateAndGetGameStatus (gameId: string, playerId: string) {
     // search for game
     const game = this.games.find(({ id, status }) => (status === GameStatus.Ongoing && id === gameId)) as Game | undefined
 
@@ -118,24 +118,28 @@ class GameStore {
     const { turns, status } = game
     // game needs a total of at least 9 turns before anyone can win
     if (turns.length < 9) {
-      return status
+      return { status }
     }
 
     const didWin = checkForVictory(turns)
 
-    // in case of victory
+    // in case of victory, update status & winner player ID
     if (didWin) {
       game.status = GameStatus.Completed
-      return game.status
+      game.winnerPlayerId = playerId
+      return {
+        status: game.status,
+        winnerPlayerId: playerId
+      }
     }
 
-    // if all turns are taken, set status as stalemate
+    // in case of stalemate (i.e., all turns are taken), update status only
     if (turns.length === 16 * 16) {
-      game.status = GameStatus.Stalemate
-      return game.status
+      game.status = GameStatus.Completed
+      return { status: game.status }
     }
 
-    return status
+    return { status }
   }
 }
 
